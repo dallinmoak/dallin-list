@@ -28,7 +28,8 @@ export default async function Index() {
       {isSupabaseConnected ? null : <div>supabase not connected </div>}
       {user ? (
         <div>
-          Welcome to the app!
+          <p>Welcome to the app!</p>
+          <i className="symbol">checklist</i>
         </div>
       ) : (
         <div>
