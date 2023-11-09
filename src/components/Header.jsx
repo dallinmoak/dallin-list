@@ -1,7 +1,10 @@
+import LeftOption from "./left-options";
+
 export default function Header() {
   return (
     <div>
-      header
+      To-Do App
+      <LeftOption />
     </div>
   );
 }

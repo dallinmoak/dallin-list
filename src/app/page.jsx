@@ -23,28 +23,16 @@ export default async function Index() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  const signOut = async () => {
-    "use server";
-    const cookieStore = cookies();
-    const supabase = createClient(cookieStore);
-    await supabase.auth.signOut();
-    return redirect("/login");
-  };
-
   return (
     <div>
-      <Header />
       {isSupabaseConnected ? null : <div>supabase not connected </div>}
       {user ? (
         <div>
-          user authenticated: {user.email}
-          <form action={signOut}>
-            <button>sign out</button>
-          </form>
+          Welcome to the app!
         </div>
       ) : (
         <div>
-          unauthenticated<Link href="/login">sign in</Link>
+         No To-Do list available.&nbsp;<Link href="/login">sign in</Link>&nbsp;to access a list.
         </div>
       )}
     </div>
