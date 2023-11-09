@@ -8,12 +8,11 @@ export default async function Index() {
   const cookieStore = cookies();
 
   const canInitSupabaseClient = () => {
-    // This function is just for the interactive tutorial.
-    // Feel free to remove it once you have Supabase connected.
     try {
       createClient(cookieStore);
       return true;
     } catch (e) {
+      console.log('create client from home page failed', e);
       return false;
     }
   };
@@ -35,7 +34,7 @@ export default async function Index() {
   return (
     <div>
       <Header />
-      <div>{isSupabaseConnected && "supabase is connected"}</div>
+      {isSupabaseConnected ? null : <div>supabase not connected </div>}
       {user ? (
         <div>
           user authenticated: {user.email}
