@@ -21,8 +21,8 @@ const materialSymbols = localFont({
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={myFont.className}>
-        <div className={materialSymbols.variable}>
+      <body className={`${myFont.className} bg-slate-100 dark:bg-slate-900 `}>
+        <div className={`${materialSymbols.variable} container mx-auto bg-slate-200 dark:bg-slate-700 text-slate-900 dark:text-slate-100 h-[100dvh]`}>
           <Header />
           {children}
         </div>

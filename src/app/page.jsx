@@ -1,8 +1,7 @@
 import { createClient } from "@/utils/server";
-import Header from "@/components/Header";
 import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
 import Link from "next/link";
+import ListMain from "@/components/list/main";
 
 export default async function Index() {
   const cookieStore = cookies();
@@ -29,7 +28,7 @@ export default async function Index() {
       {user ? (
         <div>
           <p>Welcome to the app!</p>
-          <i className="symbol">checklist</i>
+          <ListMain user={user}/>
         </div>
       ) : (
         <div>
