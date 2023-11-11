@@ -1,5 +1,6 @@
-import ListItem from "./item";
 import getListByUser from "@/utils/server/getListbyUser";
+
+import Wrapper from "./item-settings-wrapper";
 
 export default async function ListMain({user}) {
 
@@ -9,9 +10,7 @@ export default async function ListMain({user}) {
     <div>
       <i className="symbol">checklist</i>
       here is the main list
-      {list.map((item) => {
-        return <ListItem item={item} />;
-      })}
+      <Wrapper list={list} />
     </div>
   );
 }

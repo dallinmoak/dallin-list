@@ -2,8 +2,9 @@
 
 import { useState } from "react";
 
-export default function ListItem({ item }) {
+export default function ListItem({ item, hideCompleted }) {
   const [currentItem, setCurrentItem] = useState(item);
+  const [editing, setEditing] = useState(false);
 
   const checkAction = async () => {
     const fetchOptions = {
@@ -28,14 +29,24 @@ export default function ListItem({ item }) {
   };
 
   return (
-    <div className="flex flex-row">
-      <div>
+    <div className={currentItem.completed && hideCompleted ? "hidden" : ""}>
+      <div className="flex flex-row">
         <i onClick={checkAction} className="symbol cursor-pointer select-none">
           {currentItem.completed ? "check_box" : "check_box_outline_blank"}
         </i>
-      </div>
-      <div className={contentClasses[currentItem.completed]}>
-        {currentItem.content}
+        {editing ? (
+          <input type="text" />
+        ) : (
+          <div className={contentClasses[currentItem.completed]}>
+            {currentItem.content}
+          </div>
+        )}
+        <i
+          className="symbol cursor-pointer select-none"
+          onClick={() => setEditing((prev) => !prev)}
+        >
+          {editing ? "save" : "edit"}
+        </i>
       </div>
     </div>
   );
