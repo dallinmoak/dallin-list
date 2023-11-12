@@ -2,6 +2,7 @@ import Link from "next/link";
 import { headers, cookies } from "next/headers";
 import { createClient } from "@/utils/server";
 import { redirect } from "next/navigation";
+import Input from "@/components/UI/input";
 
 export default function Login({ searchParams }) {
   const signIn = async (formData) => {
@@ -53,9 +54,9 @@ export default function Login({ searchParams }) {
     <div>
       <form action={signIn}>
         <label htmlFor="email">Email</label>
-        <input name="email" placeholder="you@example.com" required />
+        <Input name="email" placeholder="you@example.com" required />
         <label htmlFor="password">Password</label>
-        <input
+        <Input
           type="password"
           name="password"
           placeholder="••••••••"
