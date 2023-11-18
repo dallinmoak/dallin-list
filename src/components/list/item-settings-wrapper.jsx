@@ -19,7 +19,7 @@ export default function Wrapper({ list, id }) {
         return (
           <ListItem
             item={item}
-            dispatch={dispatch}
+            dispatchList={dispatch}
             hideCompleted={currentSettings?.hideCompleted}
           />
         );

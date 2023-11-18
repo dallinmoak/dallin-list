@@ -4,11 +4,7 @@ import ActionIcon from "../UI/actionIcon";
 import Input from "../UI/input";
 import { useState } from "react";
 
-export default function ListItem({
-  item,
-  dispatch,
-  hideCompleted,
-}) {
+export default function ListItem({ item, dispatchList, hideCompleted }) {
   const [editContent, setEditContent] = useState();
   const [editing, setEditing] = useState(false);
 
@@ -24,15 +20,17 @@ export default function ListItem({
   };
 
   const handleCheck = async () => {
-    const data = await updateItem({
-      completed: !item.completed,
-    });
-    if (data) {
-      dispatch({
-        type: "update",
-        id: data.id,
-        newProps: {completed: data.completed},
+    if (!editing) {
+      const data = await updateItem({
+        completed: !item.completed,
       });
+      if (data) {
+        dispatchList({
+          type: "update",
+          id: data.id,
+          newProps: { completed: data.completed },
+        });
+      }
     }
   };
 
@@ -45,11 +43,11 @@ export default function ListItem({
     const data = await updateItem({ content: editContent });
     if (data) {
       setEditing(false);
-      dispatch({
-        type: 'update',
+      dispatchList({
+        type: "update",
         id: data.id,
-        newProps: {content: data.content}
-      })
+        newProps: { content: data.content },
+      });
     }
   };
 
@@ -63,9 +61,6 @@ export default function ListItem({
   return (
     <div className={item.completed && hideCompleted ? "hidden" : ""}>
       <div className="flex flex-row mb-1">
-        <ActionIcon onClick={handleCheck}>
-          {item.completed ? "check_box" : "check_box_outline_blank"}
-        </ActionIcon>
         {editing ? (
           <>
             <Input
@@ -79,6 +74,9 @@ export default function ListItem({
           </>
         ) : (
           <>
+            <ActionIcon onClick={handleCheck}>
+              {item.completed ? "check_box" : "check_box_outline_blank"}
+            </ActionIcon>
             <div className={contentClasses[item.completed]}>{item.content}</div>
             <ActionIcon onClick={handleEdit}>edit</ActionIcon>
           </>
