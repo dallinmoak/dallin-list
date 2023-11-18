@@ -10,7 +10,9 @@ export default function Input(props) {
   },[]);
 
   const editValue = (e) => {
-    props.editValue(e.target.value);
+    if(props.editValue) {
+      props.editValue(e.target.value);
+    }
   }
   return (
     <input

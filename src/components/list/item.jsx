@@ -4,41 +4,70 @@ import ActionIcon from "../UI/actionIcon";
 import Input from "../UI/input";
 import { useState } from "react";
 
-export default function ListItem({ item, hideCompleted }) {
-  const [currentItem, setCurrentItem] = useState(item);
+export default function ListItem({
+  item,
+  currentList,
+  setCurrentList,
+  hideCompleted,
+}) {
   const [editContent, setEditContent] = useState();
   const [editing, setEditing] = useState(false);
 
-  const handleCheck = async () => {
-    const fetchOptions = {
+  const updateItem = async (newProps) => {
+    const options = {
       method: "POST",
-      body: JSON.stringify({
-        ...currentItem,
-        completed: !currentItem.completed,
-      }),
+      body: JSON.stringify({ ...item, ...newProps }),
     };
-    const fetchUrl = `/api/update-item`;
-    const res = await fetch(fetchUrl, fetchOptions);
+    const url = "/api/update-item";
+    const res = await fetch(url, options);
     const data = await res.json();
+    return data;
+  };
+
+  const handleCheck = async () => {
+    const data = await updateItem({
+      completed: !item.completed,
+    });
     if (data) {
-      setCurrentItem((prev) => {
-        return { ...prev, completed: !prev.completed };
-      });
+      const newList = currentList
+        .map((oldItem) => {
+          if (oldItem.id == item.id) {
+            return {
+              ...oldItem,
+              completed: !oldItem.completed,
+            };
+          } else return oldItem;
+        })
+        .sort(
+          (a, b) => a.completed - b.completed || a.sort_order - b.sort_order
+        );
+      setCurrentList(newList);
     }
   };
 
   const handleEdit = () => {
     setEditing(true);
-    setEditContent(currentItem.content);
+    setEditContent(item.content);
   };
 
-  const handleSave = () => {
-    setEditing(false);
-
-    setCurrentItem((prev) => {
-      return { ...prev, content: editContent };
-    });
-    console.log("saved");
+  const handleSave = async () => {
+    const data = await updateItem({ content: editContent });
+    if (data) {
+      setEditing(false);
+      const newList = currentList
+        .map((oldItem) => {
+          if (oldItem.id == item.id) {
+            return {
+              ...oldItem,
+              content: editContent,
+            };
+          } else return oldItem;
+        })
+        .sort(
+          (a, b) => a.completed - b.completed || a.sort_order - b.sort_order
+        );
+      setCurrentList(newList);
+    }
   };
 
   const handleCancel = () => setEditing(false);
@@ -49,16 +78,16 @@ export default function ListItem({ item, hideCompleted }) {
   };
 
   return (
-    <div className={currentItem.completed && hideCompleted ? "hidden" : ""}>
+    <div className={item.completed && hideCompleted ? "hidden" : ""}>
       <div className="flex flex-row mb-1">
         <ActionIcon onClick={handleCheck}>
-          {currentItem.completed ? "check_box" : "check_box_outline_blank"}
+          {item.completed ? "check_box" : "check_box_outline_blank"}
         </ActionIcon>
         {editing ? (
           <>
             <Input
               type="text"
-              id={`edit_item_${currentItem.id}`}
+              id={`edit_item_${item.id}`}
               value={editContent}
               editValue={(val) => setEditContent(val)}
             />
@@ -67,9 +96,7 @@ export default function ListItem({ item, hideCompleted }) {
           </>
         ) : (
           <>
-            <div className={contentClasses[currentItem.completed]}>
-              {currentItem.content}
-            </div>
+            <div className={contentClasses[item.completed]}>{item.content}</div>
             <ActionIcon onClick={handleEdit}>edit</ActionIcon>
           </>
         )}

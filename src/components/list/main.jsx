@@ -10,7 +10,7 @@ export default async function ListMain({user}) {
     <div>
       <i className="symbol">checklist</i>
       here is the main list
-      <Wrapper list={list} />
+      <Wrapper list={list} id={user.id} />
     </div>
   );
 }

@@ -5,7 +5,7 @@ export default async function getListByUser(userId) {
   "use server";
   const cookieStore = cookies();
   const supabase = createClient(cookieStore);
-  const res = await supabase.from("list_items").select().eq("user_id", userId).order('sort_order');
+  const res = await supabase.from("list_items").select().eq("user_id", userId).order('completed').order('sort_order');
   const list = res.data;
   return list;
 }
