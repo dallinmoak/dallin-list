@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import ListItem from "./item";
 import Settings from "./settings";
 
@@ -10,10 +10,7 @@ export default function Wrapper({ list, id }) {
 
   const setSettings = (settings) => {
     setCurrentSettings(settings);
-
   };
-
-
 
   return (
     <div>
