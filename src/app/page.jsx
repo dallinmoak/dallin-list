@@ -23,11 +23,10 @@ export default async function Index() {
   } = await supabase.auth.getUser();
 
   return (
-    <div>
+    <div className="px-2">
       {isSupabaseConnected ? null : <div>supabase not connected </div>}
       {user ? (
         <div>
-          <p>Welcome to the app!</p>
           <ListMain user={user}/>
         </div>
       ) : (

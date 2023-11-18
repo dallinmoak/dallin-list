@@ -8,8 +8,8 @@ export default async function ListMain({user}) {
 
   return (
     <div>
-      <i className="symbol">checklist</i>
-      here is the main list
+      {/* <i className="symbol">checklist</i> */}
+      <h2 className="text-xl">My Todos</h2>
       <Wrapper list={list} />
     </div>
   );
