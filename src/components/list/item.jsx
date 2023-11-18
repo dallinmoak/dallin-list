@@ -6,8 +6,7 @@ import { useState } from "react";
 
 export default function ListItem({
   item,
-  currentList,
-  setCurrentList,
+  dispatch,
   hideCompleted,
 }) {
   const [editContent, setEditContent] = useState();
@@ -29,19 +28,11 @@ export default function ListItem({
       completed: !item.completed,
     });
     if (data) {
-      const newList = currentList
-        .map((oldItem) => {
-          if (oldItem.id == item.id) {
-            return {
-              ...oldItem,
-              completed: !oldItem.completed,
-            };
-          } else return oldItem;
-        })
-        .sort(
-          (a, b) => a.completed - b.completed || a.sort_order - b.sort_order
-        );
-      setCurrentList(newList);
+      dispatch({
+        type: "update",
+        id: data.id,
+        newProps: {completed: data.completed},
+      });
     }
   };
 
@@ -54,19 +45,11 @@ export default function ListItem({
     const data = await updateItem({ content: editContent });
     if (data) {
       setEditing(false);
-      const newList = currentList
-        .map((oldItem) => {
-          if (oldItem.id == item.id) {
-            return {
-              ...oldItem,
-              content: editContent,
-            };
-          } else return oldItem;
-        })
-        .sort(
-          (a, b) => a.completed - b.completed || a.sort_order - b.sort_order
-        );
-      setCurrentList(newList);
+      dispatch({
+        type: 'update',
+        id: data.id,
+        newProps: {content: data.content}
+      })
     }
   };
 

@@ -1,12 +1,12 @@
 "use client";
 
-import { useState } from "react";
+import { useReducer, useState } from "react";
 import ListItem from "./item";
 import Settings from "./settings";
 
 export default function Wrapper({ list, id }) {
   const [currentSettings, setCurrentSettings] = useState();
-  const [currentList, setCurrentList] = useState(list);
+  const [ currentList, dispatch] = useReducer(listReducer, list)
 
   const setSettings = (settings) => {
     setCurrentSettings(settings);
@@ -19,12 +19,28 @@ export default function Wrapper({ list, id }) {
         return (
           <ListItem
             item={item}
-            currentList={currentList}
-            setCurrentList={setCurrentList}
+            dispatch={dispatch}
             hideCompleted={currentSettings?.hideCompleted}
           />
         );
       })}
     </div>
   );
+}
+
+const listReducer = (list, action) => {
+  switch(action.type) {
+    case 'update':{
+      const newList = list.map((oldItem)=> {
+        if(oldItem.id == action.id){
+          return {
+            ...oldItem,
+            ...action.newProps
+          }
+        } else return oldItem;
+      })
+      .sort((a, b) => a.completed - b.completed || a.sort_order - b.sort_order);
+      return newList;
+    }
+  }
 }
