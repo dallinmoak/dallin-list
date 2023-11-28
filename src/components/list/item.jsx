@@ -54,13 +54,21 @@ export default function ListItem({ item, dispatchList, hideCompleted }) {
   const handleCancel = () => setEditing(false);
 
   const contentClasses = {
-    true: "line-through",
-    false: "",
+    true: "w-full line-through",
+    false: "w-full ",
+  };
+
+  const itemClasses = (completed, hideCompleted) => {
+    if (completed && hideCompleted) {
+      return "animate-[slide-fade-out_0.5s_ease-out_forwards]";
+    } else {
+      return "";
+    }
   };
 
   return (
-    <div className={item.completed && hideCompleted ? "hidden" : ""}>
-      <div className="flex flex-row mb-1">
+    <div className={item.completed && hideCompleted ? "" : ""}>
+      <div className="flex flex-row mb-1 w-full">
         {editing ? (
           <>
             <Input
@@ -73,13 +81,17 @@ export default function ListItem({ item, dispatchList, hideCompleted }) {
             <ActionIcon onClick={handleCancel}>cancel</ActionIcon>
           </>
         ) : (
-          <>
-            <ActionIcon onClick={handleCheck}>
-              {item.completed ? "check_box" : "check_box_outline_blank"}
-            </ActionIcon>
-            <div className={contentClasses[item.completed]}>{item.content}</div>
-            <ActionIcon onClick={handleEdit}>edit</ActionIcon>
-          </>
+          <span className="[&>div]:flex">
+            <div className={itemClasses(item.completed, hideCompleted)}>
+              <ActionIcon onClick={handleCheck}>
+                {item.completed ? "check_box" : "check_box_outline_blank"}
+              </ActionIcon>
+              <div className={contentClasses[item.completed]}>
+                {item.content}
+              </div>
+              <ActionIcon onClick={handleEdit}>edit</ActionIcon>
+            </div>
+          </span>
         )}
       </div>
     </div>

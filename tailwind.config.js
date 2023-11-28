@@ -6,7 +6,22 @@ module.exports = {
     "./src/app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      keyframes: {
+        "slide-fade-out": {
+          "0%": { 
+            opacity: 1,
+            display: "flex",
+            "margin-left": "0%",
+          },
+          "100%": {
+            opacity: 0,
+            display: "none",
+            "margin-left": "50px",
+          },
+        },
+      },
+    },
   },
   plugins: [],
 };

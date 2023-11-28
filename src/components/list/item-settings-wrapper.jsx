@@ -39,7 +39,7 @@ const listReducer = (list, action) => {
           }
         } else return oldItem;
       })
-      .sort((a, b) => a.completed - b.completed || a.sort_order - b.sort_order);
+      // .sort((a, b) => a.completed - b.completed || a.sort_order - b.sort_order);
       return newList;
     }
   }
